@@ -1,0 +1,44 @@
+# ==================== static_reasoning_chain.yaml ====================
+# Example DSL definition:
+# A simple 3-step deterministic execution chain using OpenAI models.
+
+intent: "BTC forecast demo"
+anchor: "btc_forecast_case_20251120"
+scope: "example_reproducibility_test"
+
+reasoning_chain:
+  - step: 1
+    name: "Fetch key indicators"
+    openai_call:
+      model: "gpt-4o"
+      messages:
+        - role: system
+          content: "List five key BTC market indicators in JSON only."
+        - role: user
+          content: "BTC indicators for 2025-2026"
+      max_tokens: 300
+
+  - step: 2
+    name: "Score indicators"
+    openai_call:
+      model: "gpt-4o"
+      messages:
+        - role: system
+          content: "Score each indicator 0-10 for bullish impact. Respond in JSON."
+        - role: user
+          content: "{{step1_output}}"
+      max_tokens: 300
+
+  - step: 3
+    name: "Final verdict"
+    openai_call:
+      model: "o1-preview"
+      messages:
+        - role: system
+          content: "Produce a one-sentence overall forecast based on provided scores."
+        - role: user
+          content: "Generate final verdict."
+
+control:
+  timeout_seconds: 60
+  reproducibility: "strict"
