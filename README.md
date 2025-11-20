@@ -14,6 +14,7 @@ It does not modify any OpenAI model or internal system.
 Instead, it provides an optional reproducibility layer on top of normal API calls.
 
 ✨ Features
+
 🔒 1. Locked Sampling Parameters
 
 Automatically sets:
